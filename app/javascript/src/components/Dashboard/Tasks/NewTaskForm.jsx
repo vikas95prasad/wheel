@@ -5,7 +5,7 @@ import { Input } from "neetoui/formik";
 import { Button } from "neetoui";
 import notesApi from "apis/notes";
 
-export default function NewNoteForm({ onClose, refetch }) {
+export default function NewTaskForm({ onClose, refetch }) {
   const handleSubmit = async values => {
     try {
       await notesApi.create(values);
@@ -20,11 +20,15 @@ export default function NewNoteForm({ onClose, refetch }) {
       initialValues={{
         title: "",
         description: "",
+        status: "",
+        createOn: "",
+        dueDate: "",
       }}
       onSubmit={handleSubmit}
       validationSchema={yup.object({
-        title: yup.string().required("Title is required"),
-        description: yup.string().required("Description is required"),
+        title: yup.string().required("Title is required."),
+        description: yup.string().required("Description is required."),
+        dueDate: yup.string().required("Due Date is required."),
       })}
     >
       {({ isSubmitting }) => (
