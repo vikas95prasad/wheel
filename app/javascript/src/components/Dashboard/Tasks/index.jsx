@@ -5,27 +5,27 @@ import EmptyState from "components/Common/EmptyState";
 import EmptyNotesListImage from "images/EmptyNotesList";
 import { PageHeading, SubHeader } from "neetoui/layouts";
 
-import NoteTable from "./NoteTable";
-import NewNotePane from "./NewNotePane";
+import TaskTable from "./TaskTable";
+import NewTaskPane from "./NewTaskPane";
 import DeleteAlert from "./DeleteAlert";
 
-const Notes = () => {
+const Tasks = () => {
   const [loading, setLoading] = useState(true);
-  const [showNewNotePane, setShowNewNotePane] = useState(false);
+  const [showNewTaskPane, setShowNewTaskPane] = useState(false);
   const [showDeleteAlert, setShowDeleteAlert] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedNoteIds, setSelectedNoteIds] = useState([]);
-  const [notes, setNotes] = useState([]);
+  const [selectedTaskIds, setSelectedTaskIds] = useState([]);
+  const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
-    fetchNotes();
+    fetchTasks();
   }, []);
 
-  const fetchNotes = async () => {
+  const fetchTasks = async () => {
     try {
       setLoading(true);
       const response = await notesApi.fetch();
-      setNotes(response.data);
+      setTasks(response.data);
     } catch (error) {
       logger.error(error);
     } finally {
@@ -39,16 +39,16 @@ const Notes = () => {
   return (
     <>
       <PageHeading
-        title="Notes"
+        title="Tasks"
         rightButton={() => (
           <Button
-            onClick={() => setShowNewNotePane(true)}
-            label="Add new note"
+            onClick={() => setShowNewTaskPane(true)}
+            label="Add Task"
             icon="ri-add-line"
           />
         )}
       />
-      {notes.length ? (
+      {tasks.length ? (
         <>
           <SubHeader
             searchProps={{
@@ -58,38 +58,53 @@ const Notes = () => {
             }}
             deleteButtonProps={{
               onClick: () => setShowDeleteAlert(true),
-              disabled: !selectedNoteIds.length,
+              disabled: !selectedTaskIds.length,
+            }}
+            paginationProps={{
+              count: tasks.length,
+              pageNo: 1,
+              pageSize: 10,
+            }}
+            toggleFilter={{
+              value: "test",
+            }}
+            sortProps={{
+              options: [
+                { label: "Title", value: "title" },
+                { label: "Status", value: "status" },
+                { label: "Due Date", value: "due_date" },
+              ],
             }}
           />
-          <NoteTable
-            selectedNoteIds={selectedNoteIds}
-            setSelectedNoteIds={setSelectedNoteIds}
-            notes={notes}
+          <TaskTable
+            selectedTaskIds={selectedTaskIds}
+            setSelectedTaskIds={setSelectedTaskIds}
+            tasks={tasks}
           />
         </>
       ) : (
         <EmptyState
           image={EmptyNotesListImage}
-          title="Looks like you don't have any notes!"
-          subtitle="Add your notes to send customized emails to them."
-          primaryAction={() => setShowNewNotePane(true)}
+          title="Looks like you don't have any tasks!"
+          subtitle="Add your tasks to send customized emails to them."
+          primaryAction={() => setShowNewTaskPane(true)}
           primaryActionLabel="Add new note"
         />
       )}
-      <NewNotePane
-        showPane={showNewNotePane}
-        setShowPane={setShowNewNotePane}
-        fetchNotes={fetchNotes}
+      <NewTaskPane
+        showPane={showNewTaskPane}
+        setShowPane={setShowNewTaskPane}
+        fetchTasks={fetchTasks}
       />
       {showDeleteAlert && (
         <DeleteAlert
-          selectedNoteIds={selectedNoteIds}
+          selectedTaskIds={selectedTaskIds}
           onClose={() => setShowDeleteAlert(false)}
-          refetch={fetchNotes}
+          refetch={fetchTasks}
         />
       )}
     </>
   );
 };
 
-export default Notes;
+export default Tasks;
