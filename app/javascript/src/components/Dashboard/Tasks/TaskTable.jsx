@@ -8,6 +8,14 @@ export default function TaskTable({
   setSelectedTaskIds,
   tasks = [],
 }) {
+  const getColor = status => {
+    return status == "todo"
+      ? "red"
+      : status == "in_progress"
+      ? "blue"
+      : "green";
+  };
+
   return (
     <div className="w-full px-4">
       <table className="nui-table nui-table--checkbox">
@@ -65,7 +73,9 @@ export default function TaskTable({
               </td>
               <td>{task.description}</td>
               <td className="flex flex-row items-center justify-center text-gray-900">
-                <Badge>{titleize(task.status)}</Badge>
+                <Badge color={getColor(task.status)}>
+                  {titleize(task.status)}
+                </Badge>
               </td>
               <td className="text-center">
                 {task.created_at
