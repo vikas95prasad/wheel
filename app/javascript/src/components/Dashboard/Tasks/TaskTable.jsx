@@ -4,6 +4,7 @@ import { titleize } from "../../Common/utils/titleize";
 import { formatDate } from "../../Common/utils/formatDate";
 import { getBadgeColor } from "../Tasks/common/getBadgeColor";
 import { handleTaskDelete } from "../Tasks/handler/handleTaskDelete";
+import { truncateText } from "../../Common/utils/truncateText";
 
 export default function TaskTable({
   selectedTaskIds,
@@ -63,11 +64,13 @@ export default function TaskTable({
                   }}
                 />
               </td>
-              <td>
-                <div>{task.title}</div>
+              <td className="text-blue-500 task-title-width">
+                <div>{truncateText(task.title)}</div>
               </td>
-              <td>{task.description}</td>
-              <td className="flex flex-row items-center justify-center text-gray-900">
+              <td className="text-left task-description-width">
+                <div>{truncateText(task.description, 40)}</div>
+              </td>
+              <td className="text-center">
                 <Badge color={getBadgeColor[task.status]}>
                   {titleize(task.status)}
                 </Badge>

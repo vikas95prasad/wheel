@@ -69,6 +69,7 @@ const Tasks = () => {
               value: "test",
             }}
             sortProps={{
+              onClick: () => {},
               options: [
                 { label: "Title", value: "title" },
                 { label: "Status", value: "status" },
