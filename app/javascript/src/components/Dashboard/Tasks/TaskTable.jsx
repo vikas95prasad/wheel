@@ -7,6 +7,7 @@ export default function TaskTable({
   selectedTaskIds,
   setSelectedTaskIds,
   tasks = [],
+  setShowDeleteAlert,
 }) {
   const getColor = status => {
     return status == "todo"
@@ -14,6 +15,11 @@ export default function TaskTable({
       : status == "in_progress"
       ? "blue"
       : "green";
+  };
+
+  const handleTaskDelete = async taskId => {
+    setSelectedTaskIds([taskId]);
+    setShowDeleteAlert(true);
   };
 
   return (
@@ -89,7 +95,11 @@ export default function TaskTable({
               </td>
               <td className="text-center">
                 <Tooltip content={"Delete"} position="bottom">
-                  <Button style="icon" icon="ri-delete-bin-line" />
+                  <Button
+                    style="icon"
+                    icon="ri-delete-bin-line"
+                    onClick={() => handleTaskDelete(task.id)}
+                  />
                 </Tooltip>
               </td>
             </tr>
