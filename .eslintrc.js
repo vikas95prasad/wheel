@@ -32,10 +32,10 @@ module.exports = {
     "react"
   ],
   "rules": {
-    "indent": ["error", 2],
+    "indent": ["error", 2, { "ignoredNodes": ["ConditionalExpression"] }],
     "semi": ["error", "always"],
     "no-console": "error",
     "import/prefer-default-export": "off",
-    "react/prop-types": 0
-  }
+    "react/prop-types": 0,
+  },
 };
