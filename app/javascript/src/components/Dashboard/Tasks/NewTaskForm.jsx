@@ -3,34 +3,17 @@ import * as yup from "yup";
 import { Formik, Form } from "formik";
 import { Input, Select } from "neetoui/formik";
 import { Button } from "neetoui";
-import notesApi from "apis/notes";
-import { titleize } from "../../Common/lib/titleize";
+import { titleize } from "../../Common/utils/titleize";
+import { getTaskStatusList } from "../Tasks/constants/getTaskStatusList";
+import { handleTaskSubmit } from "../Tasks/handler/handleTaskSubmit";
 
 export default function NewTaskForm({ onClose, refetch }) {
-  const handleSubmit = async values => {
-    try {
-      const { title, description, status, dueDate } = values;
-      const task = {
-        title,
-        description,
-        due_date: dueDate,
-        status: status.value,
-      };
-      await notesApi.create(task);
-      refetch();
-      onClose();
-    } catch (err) {
-      logger.error(err);
-    }
-  };
+  const formatStatus = status =>
+    status.map(status => ({ value: status, label: titleize(status) }));
 
-  const taskStatuses = ["todo", "in_progress", "completed"];
-  const getFormattedOptions = statuses =>
-    statuses.map(status => ({
-      value: status,
-      label: titleize(status),
-    }));
-  const formattedTaskStatuses = getFormattedOptions(taskStatuses);
+  const handleOnSubmit = values => {
+    handleTaskSubmit(values, refetch, onClose);
+  };
 
   return (
     <Formik
@@ -42,7 +25,7 @@ export default function NewTaskForm({ onClose, refetch }) {
         status: "",
         dueDate: "",
       }}
-      onSubmit={handleSubmit}
+      onSubmit={handleOnSubmit}
       validationSchema={yup.object({
         title: yup.string().required("Title is required."),
         description: yup.string().required("Description is required."),
@@ -57,7 +40,7 @@ export default function NewTaskForm({ onClose, refetch }) {
             label="Task Status"
             name="status"
             placeholder="Select task status"
-            options={formattedTaskStatuses}
+            options={formatStatus(getTaskStatusList)}
             className="mb-3"
           />
           <Input label="Due Date" name="dueDate" type="date" className="mb-3" />

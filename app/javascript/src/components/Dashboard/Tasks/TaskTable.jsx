@@ -1,7 +1,9 @@
 import React from "react";
-import moment from "moment";
 import { Checkbox, Tooltip, Button, Badge } from "neetoui";
-import { titleize } from "../../Common/lib/titleize";
+import { titleize } from "../../Common/utils/titleize";
+import { formatDate } from "../../Common/utils/formatDate";
+import { getBadgeColor } from "../Tasks/common/getBadgeColor";
+import { handleTaskDelete } from "../Tasks/handler/handleTaskDelete";
 
 export default function TaskTable({
   selectedTaskIds,
@@ -9,19 +11,6 @@ export default function TaskTable({
   tasks = [],
   setShowDeleteAlert,
 }) {
-  const getColor = status => {
-    return status == "todo"
-      ? "red"
-      : status == "in_progress"
-      ? "blue"
-      : "green";
-  };
-
-  const handleTaskDelete = async taskId => {
-    setSelectedTaskIds([taskId]);
-    setShowDeleteAlert(true);
-  };
-
   return (
     <div className="w-full px-4">
       <table className="nui-table nui-table--checkbox">
@@ -59,8 +48,8 @@ export default function TaskTable({
               <td>
                 <Checkbox
                   checked={selectedTaskIds.includes(task.id)}
-                  onClick={event => {
-                    event.stopPropagation();
+                  onClick={e => {
+                    e.stopPropagation();
                     const index = selectedTaskIds.indexOf(task.id);
 
                     if (index > -1) {
@@ -79,26 +68,24 @@ export default function TaskTable({
               </td>
               <td>{task.description}</td>
               <td className="flex flex-row items-center justify-center text-gray-900">
-                <Badge color={getColor(task.status)}>
+                <Badge color={getBadgeColor[task.status]}>
                   {titleize(task.status)}
                 </Badge>
               </td>
-              <td className="text-center">
-                {task.created_at
-                  ? moment(task.created_at).format("D MMMM, YYYY")
-                  : "-"}
-              </td>
-              <td className="text-center">
-                {task.due_date
-                  ? moment(task.due_date).format("D MMMM, YYYY")
-                  : "-"}
-              </td>
+              <td className="text-center">{formatDate(task.created_at)}</td>
+              <td className="text-center">{formatDate(task.due_date)}</td>
               <td className="text-center">
                 <Tooltip content={"Delete"} position="bottom">
                   <Button
                     style="icon"
                     icon="ri-delete-bin-line"
-                    onClick={() => handleTaskDelete(task.id)}
+                    onClick={() =>
+                      handleTaskDelete(
+                        task.id,
+                        setSelectedTaskIds,
+                        setShowDeleteAlert
+                      )
+                    }
                   />
                 </Tooltip>
               </td>
