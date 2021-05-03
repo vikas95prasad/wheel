@@ -80,6 +80,7 @@ const Tasks = () => {
             selectedTaskIds={selectedTaskIds}
             setSelectedTaskIds={setSelectedTaskIds}
             tasks={tasks}
+            setShowDeleteAlert={setShowDeleteAlert}
           />
         </>
       ) : (
