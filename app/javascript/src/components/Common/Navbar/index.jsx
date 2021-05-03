@@ -30,15 +30,6 @@ const NavBar = () => {
       <div className="flex flex-col items-center justify-between w-full h-full">
         <div className="flex flex-col items-center justify-start w-full pt-4">
           <NavItem title="Tasks" link="/tasks" icon="ri-todo-line" />
-          <NavItem
-            title="Settings"
-            link="/settings"
-            icon="ri-settings-2-line"
-            subLinks={[
-              { title: "Change password", link: "/my/password/edit" },
-              { title: "My Profile", link: "/my/profile" },
-            ]}
-          />
         </div>
         <div className="mb-4">
           <AccountDropdown handleLogout={handleLogout} />
