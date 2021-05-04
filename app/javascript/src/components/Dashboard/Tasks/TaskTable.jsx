@@ -14,7 +14,7 @@ export default function TaskTable({
 }) {
   return (
     <div className="w-full px-4">
-      <table className="nui-table nui-table--checkbox">
+      <table className="nui-table--actions nui-table--hover nui-table nui-table--checkbox">
         <thead>
           <tr>
             <th>
@@ -37,7 +37,7 @@ export default function TaskTable({
             <th className="text-center">Status</th>
             <th className="text-center">Created On</th>
             <th className="text-center">Due Date</th>
-            <th className="text-center">Actions</th>
+            <th className="text-center"></th>
           </tr>
         </thead>
         <tbody>
@@ -65,7 +65,9 @@ export default function TaskTable({
                 />
               </td>
               <td className="text-blue-500 task-title-width">
-                <div>{truncateText(task.title)}</div>
+                <div>
+                  <Button style="link" label={truncateText(task.title)} />
+                </div>
               </td>
               <td className="text-left task-description-width">
                 <div>{truncateText(task.description, 40)}</div>
@@ -78,19 +80,24 @@ export default function TaskTable({
               <td className="text-center">{formatDate(task.created_at)}</td>
               <td className="text-center">{formatDate(task.due_date)}</td>
               <td className="text-center">
-                <Tooltip content={"Delete"} position="bottom">
-                  <Button
-                    style="icon"
-                    icon="ri-delete-bin-line"
-                    onClick={() =>
-                      handleTaskDelete(
-                        task.id,
-                        setSelectedTaskIds,
-                        setShowDeleteAlert
-                      )
-                    }
-                  />
-                </Tooltip>
+                <span className="flex space-x-4">
+                  <Tooltip content={"Edit"} position="bottom">
+                    <Button style="icon" icon="ri-pencil-line" />
+                  </Tooltip>
+                  <Tooltip content={"Delete"} position="bottom">
+                    <Button
+                      style="icon"
+                      icon="ri-delete-bin-line"
+                      onClick={() =>
+                        handleTaskDelete(
+                          task.id,
+                          setSelectedTaskIds,
+                          setShowDeleteAlert
+                        )
+                      }
+                    />
+                  </Tooltip>
+                </span>
               </td>
             </tr>
           ))}
