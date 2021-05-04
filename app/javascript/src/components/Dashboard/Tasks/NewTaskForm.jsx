@@ -2,7 +2,7 @@ import React from "react";
 import * as yup from "yup";
 import { Formik, Form } from "formik";
 import { Input, Select } from "neetoui/formik";
-import { Button } from "neetoui";
+import { Button, DateInput } from "neetoui";
 import { titleize } from "../../Common/utils/titleize";
 import { getTaskStatusList } from "../Tasks/constants/getTaskStatusList";
 import { handleTaskSubmit } from "../Tasks/handler/handleTaskSubmit";
@@ -43,7 +43,7 @@ export default function NewTaskForm({ onClose, refetch }) {
             options={formatStatus(getTaskStatusList)}
             className="mb-3"
           />
-          <Input label="Due Date" name="dueDate" type="date" className="mb-3" />
+          <DateInput label="Due Date" name="dueDate" className="mb-3" />
           <div className="nui-pane__footer nui-pane__footer--absolute">
             <Button
               onClick={onClose}

@@ -64,9 +64,13 @@ export default function TaskTable({
                   }}
                 />
               </td>
-              <td className="text-blue-500 task-title-width">
+              <td className="task-title-width">
                 <div>
-                  <Button style="link" label={truncateText(task.title)} />
+                  <Button
+                    href="#"
+                    style="link"
+                    label={truncateText(task.title)}
+                  />
                 </div>
               </td>
               <td className="text-left task-description-width">
